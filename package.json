@@ -3,7 +3,7 @@
   "version": "1.1.0",
   "description": "Ukagaka SakuraScript Executer",
   "keywords": [],
-  "main": "./lib/sakurascript-executer.js",
+  "main": "./es5/lib/sakurascript-executer.js",
   "scripts": {
     "test": "gulp test"
   },

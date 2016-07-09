@@ -3,7 +3,7 @@
   "description": "Ukagaka SakuraScript Executer",
   "dependencies": {
   },
-  "main": ["./dist/sakurascript-executer.js"],
+  "main": ["./web/sakurascript-executer.js"],
   "ignore": [
     "**/.sw?",
     "**/.*.sw?",
