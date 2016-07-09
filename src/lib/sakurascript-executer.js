@@ -50,11 +50,15 @@ export class SakuraScriptExecuter extends EventEmitter {
   /**
    * execute sakura script
    * @param {string} script sakura script
-   * @emits {execute} sakurascript token event
+   * @emits {begin_execute()} sakurascript execute begin event
+   * @emits {execute(token)} sakurascript execute token event
+   * @emits {end_execute(is_abort)} sakurascript execute end event
    * @return {void}
    */
   async execute(script) {
+    this.abort_execute(); // abort previous session
     const sakurascript = SakuraScript.parse(script);
+    this.emit('begin_execute');
     this._initialize_execute_state();
     for (const token of sakurascript.tokens) {
       if (this._wait_until_action_name) {
@@ -98,6 +102,7 @@ export class SakuraScriptExecuter extends EventEmitter {
       }
     }
     this._finalize_execute_state();
+    this.emit('end_execute', this._will_abort);
   }
 
   _initialize_execute_state() {
