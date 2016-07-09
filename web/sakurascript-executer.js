@@ -110,28 +110,31 @@ var sakuraScriptExecuter =
 	    var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	    (0, _classCallCheck3.default)(this, SakuraScriptExecuter);
 	
-	    /** @type {Object} surface mapping */
-	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(SakuraScriptExecuter).call(this));
 	
-	    _this.surface_mapping = options.surface_mapping || {};
-	    /** @type {number} talk default wait */
-	    _this.talk_wait = options.talk_wait || 0;
-	    /** @type {Boolean} quick mode */
-	    _this.quick = options.quick || false;
+	    _this._quick = options.quick || false;
+	    _this._talk_wait = options.talk_wait || 0;
+	    _this._executing = false;
+	    _this._surface_mapping = options.surface_mapping || {};
 	    return _this;
 	  }
 	
 	  /**
-	   * execute sakura script
-	   * @param {string} script sakura script
-	   * @emits {sakurascript} sakura script token event
-	   * @return {void}
+	   * quick mode
+	   * @type {Boolean}
 	   */
 	
 	
 	  (0, _createClass3.default)(SakuraScriptExecuter, [{
 	    key: 'execute',
+	
+	
+	    /**
+	     * execute sakura script
+	     * @param {string} script sakura script
+	     * @emits {sakurascript} token executed event
+	     * @return {void}
+	     */
 	    value: function () {
 	      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(script) {
 	        var sakurascript, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, token, surface_id, period;
@@ -157,16 +160,16 @@ var sakuraScriptExecuter =
 	
 	                token = _step.value;
 	
-	                if (!this.wait_until_action) {
+	                if (!this._wait_until_action_name) {
 	                  _context.next = 15;
 	                  break;
 	                }
 	
 	                _context.next = 12;
-	                return this._wait_until_action(this.wait_until_action);
+	                return this._wait_until_action(this._wait_until_action_name);
 	
 	              case 12:
-	                this.wait_until_action = null;
+	                this._wait_until_action_name = null;
 	                _context.next = 25;
 	                break;
 	
@@ -176,21 +179,21 @@ var sakuraScriptExecuter =
 	                  break;
 	                }
 	
-	                if (!(this.wait != null)) {
+	                if (!(this._wait_period != null)) {
 	                  _context.next = 22;
 	                  break;
 	                }
 	
 	                _context.next = 19;
-	                return this._wait(this.wait);
+	                return this._wait(this._wait_period);
 	
 	              case 19:
-	                this.wait = null;
+	                this._wait_period = null;
 	                _context.next = 25;
 	                break;
 	
 	              case 22:
-	                if (!(token instanceof Char && !this.quick_section)) {
+	                if (!(token instanceof _sakurascript.SakuraScriptToken.Char && !this._quick_section)) {
 	                  _context.next = 25;
 	                  break;
 	                }
@@ -199,7 +202,7 @@ var sakuraScriptExecuter =
 	                return this._wait(this.talk_wait);
 	
 	              case 25:
-	                if (!this.will_abort) {
+	                if (!this._will_abort) {
 	                  _context.next = 27;
 	                  break;
 	                }
@@ -218,30 +221,30 @@ var sakuraScriptExecuter =
 	
 	              case 32:
 	                if (token instanceof _sakurascript.SakuraScriptToken.Surface) {
-	                  this.surface_id = token.surface;
+	                  this._surface_id = token.surface;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.SurfaceAlias) {
 	                  surface_id = this.surface_mapping[token.surface_alias];
 	
-	                  if (surface_id) this.surface_id = surface_id;
+	                  if (surface_id) this._surface_id = surface_id;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.PlayAnimationWait) {
-	                  this.wait_until_action = '_animation_finished_' + this.surface_id + '_' + token.animation;
+	                  this._wait_until_action_name = '_animation_finished_' + this._surface_id + '_' + token.animation;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.WaitAnimationEnd) {
-	                  this.wait_until_action = '_animation_finished_' + this.surface_id + '_' + token.id;
+	                  this._wait_until_action_name = '_animation_finished_' + this._surface_id + '_' + token.id;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.WaitFromBeginning) {
-	                  period = new Date() - this.execute_start_time;
+	                  period = new Date() - this._execute_start_time;
 	
-	                  if (period > 0) this.wait = period;
+	                  if (period > 0) this._wait_period = period;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.ResetBeginning) {
-	                  this.execute_start_time = new Date();
+	                  this._execute_start_time = new Date();
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.WaitClick) {
-	                  this.execute_start_time = new Date();
-	                  this.wait_until_action = '_balloon_clicked';
+	                  this._execute_start_time = new Date();
+	                  this._wait_until_action_name = '_balloon_clicked';
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.SimpleWait) {
-	                  this.wait = token.period * 50;
+	                  this._wait_period = token.period * 50;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.PreciseWait) {
-	                  this.wait = token.period;
+	                  this._wait_period = token.period;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.ToggleQuick) {
-	                  this.quick_section = !this.quick_section;
+	                  this._quick_section = !this._quick_section;
 	                }
 	
 	              case 33:
@@ -303,18 +306,18 @@ var sakuraScriptExecuter =
 	  }, {
 	    key: '_initialize_execute_state',
 	    value: function _initialize_execute_state() {
-	      this.executing = true;
-	      this.wait = 0;
-	      this.wait_until_action = null;
-	      this.quick_section = false;
-	      this.will_abort = false;
-	      this.current_wait = null;
-	      this.execute_start_time = new Date();
+	      this._executing = true;
+	      this._wait_period = 0;
+	      this._wait_until_action_name = null;
+	      this._quick_section = false;
+	      this._will_abort = false;
+	      this._current_wait = null;
+	      this._execute_start_time = new Date();
 	    }
 	  }, {
 	    key: '_finalize_execute_state',
 	    value: function _finalize_execute_state() {
-	      this.executing = false;
+	      this._executing = false;
 	    }
 	  }, {
 	    key: '_wait',
@@ -327,12 +330,12 @@ var sakuraScriptExecuter =
 	            switch (_context2.prev = _context2.next) {
 	              case 0:
 	                return _context2.abrupt('return', new _promise2.default(function (resolve) {
-	                  _this2.current_wait = resolve;
+	                  _this2._current_wait = resolve;
 	                  setTimeout(function () {
 	                    return resolve(period);
 	                  }, period);
 	                }).then(function () {
-	                  _this2.current_wait = null;
+	                  _this2._current_wait = null;
 	                }));
 	
 	              case 1:
@@ -360,10 +363,10 @@ var sakuraScriptExecuter =
 	            switch (_context3.prev = _context3.next) {
 	              case 0:
 	                return _context3.abrupt('return', new _promise2.default(function (resolve) {
-	                  _this3.current_wait = resolve;
+	                  _this3._current_wait = resolve;
 	                  _this3[name] = resolve;
 	                }).then(function () {
-	                  _this3.current_wait = null;
+	                  _this3._current_wait = null;
 	                  delete _this3[name];
 	                }));
 	
@@ -390,11 +393,13 @@ var sakuraScriptExecuter =
 	  }, {
 	    key: 'balloon_clicked',
 	    value: function balloon_clicked() {
-	      if (this._balloon_clicked) this.balloon_clicked();
+	      if (this._balloon_clicked) this._balloon_clicked();
 	    }
 	
 	    /**
 	     * call when animation finished
+	     * @param {number} surface_id surface id
+	     * @param {number} animation_id animation id
 	     * @return {void}
 	     */
 	
@@ -413,8 +418,55 @@ var sakuraScriptExecuter =
 	  }, {
 	    key: 'abort_execute',
 	    value: function abort_execute() {
-	      this.will_abort = true;
-	      if (this.current_wait) this.current_wait();
+	      this._will_abort = true;
+	      if (this._current_wait) this._current_wait();
+	    }
+	  }, {
+	    key: 'quick',
+	    get: function get() {
+	      return this._quick;
+	    }
+	
+	    /**
+	     * quick mode
+	     * @type {Boolean}
+	     */
+	    ,
+	    set: function set(value) {
+	      this._quick = value;
+	    }
+	
+	    /**
+	     * default talk wait
+	     * @type {number}
+	     */
+	
+	  }, {
+	    key: 'talk_wait',
+	    get: function get() {
+	      return this._talk_wait;
+	    }
+	
+	    /**
+	     * true if executing
+	     * @type {Boolean}
+	     */
+	
+	  }, {
+	    key: 'executing',
+	    get: function get() {
+	      return this._executing;
+	    }
+	
+	    /**
+	     * surface mapping
+	     * @type {Object}
+	     */
+	
+	  }, {
+	    key: 'surface_mapping',
+	    get: function get() {
+	      return this._surface_mapping;
 	    }
 	  }]);
 	  return SakuraScriptExecuter;
