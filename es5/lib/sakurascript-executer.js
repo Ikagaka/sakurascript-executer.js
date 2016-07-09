@@ -85,7 +85,7 @@ var SakuraScriptExecuter = exports.SakuraScriptExecuter = function (_EventEmitte
     /**
      * execute sakura script
      * @param {string} script sakura script
-     * @emits {sakurascript} token executed event
+     * @emits {execute} sakurascript token event
      * @return {void}
      */
     value: function () {
@@ -163,7 +163,7 @@ var SakuraScriptExecuter = exports.SakuraScriptExecuter = function (_EventEmitte
                 return _context.abrupt('break', 36);
 
               case 27:
-                this.emit('sakurascript', token);
+                this.emit('execute', token);
 
                 if (!(token instanceof _sakurascript.SakuraScriptToken.Char)) {
                   _context.next = 32;

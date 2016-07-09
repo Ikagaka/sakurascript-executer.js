@@ -50,7 +50,7 @@ export class SakuraScriptExecuter extends EventEmitter {
   /**
    * execute sakura script
    * @param {string} script sakura script
-   * @emits {sakurascript} token executed event
+   * @emits {execute} sakurascript token event
    * @return {void}
    */
   async execute(script) {
@@ -69,7 +69,7 @@ export class SakuraScriptExecuter extends EventEmitter {
         }
       }
       if (this._will_abort) break;
-      this.emit('sakurascript', token);
+      this.emit('execute', token);
       if (token instanceof SakuraScriptToken.Char) {
         continue;
       } else if (token instanceof SakuraScriptToken.Surface) {
