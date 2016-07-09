@@ -1,6 +1,6 @@
 {
   "name": "sakurascript-executer",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "Ukagaka SakuraScript Executer",
   "keywords": [],
   "main": "./es5/lib/sakurascript-executer.js",
