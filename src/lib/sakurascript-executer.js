@@ -14,7 +14,6 @@ export class SakuraScriptExecuter extends EventEmitter {
     this._quick = options.quick || false;
     this._talk_wait = options.talk_wait || 0;
     this._executing = false;
-    this._surface_mapping = options.surface_mapping || {};
   }
 
   /**
@@ -40,12 +39,6 @@ export class SakuraScriptExecuter extends EventEmitter {
    * @type {Boolean}
    */
   get executing() { return this._executing; }
-
-  /**
-   * surface mapping
-   * @type {Object}
-   */
-  get surface_mapping() { return this._surface_mapping; }
 
   /**
    * execute sakura script
@@ -76,15 +69,10 @@ export class SakuraScriptExecuter extends EventEmitter {
       this.emit('execute', token);
       if (token instanceof SakuraScriptToken.Char) {
         continue;
-      } else if (token instanceof SakuraScriptToken.Surface) {
-        this._surface_id = token.surface;
-      } else if (token instanceof SakuraScriptToken.SurfaceAlias) {
-        const surface_id = this.surface_mapping[token.surface_alias];
-        if (surface_id) this._surface_id = surface_id;
       } else if (token instanceof SakuraScriptToken.PlayAnimationWait) {
-        this._wait_until_action_name = `_animation_finished_${this._surface_id}_${token.animation}`;
+        this._wait_until_action_name = `_animation_finished_${token.animation}`;
       } else if (token instanceof SakuraScriptToken.WaitAnimationEnd) {
-        this._wait_until_action_name = `_animation_finished_${this._surface_id}_${token.id}`;
+        this._wait_until_action_name = `_animation_finished_${token.id}`;
       } else if (token instanceof SakuraScriptToken.WaitFromBeginning) {
         const period = new Date() - this._execute_start_time;
         if (period > 0) this._wait_period = period;
@@ -148,12 +136,11 @@ export class SakuraScriptExecuter extends EventEmitter {
 
   /**
    * call when animation finished
-   * @param {number} surface_id surface id
    * @param {number} animation_id animation id
    * @return {void}
    */
-  animation_finished(surface_id, animation_id) {
-    const done = this[`_animation_finished_${surface_id}_${animation_id}`];
+  animation_finished(animation_id) {
+    const done = this[`_animation_finished_${animation_id}`];
     if (done) done();
   }
 

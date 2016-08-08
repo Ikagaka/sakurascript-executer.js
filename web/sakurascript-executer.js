@@ -115,7 +115,6 @@ var sakuraScriptExecuter =
 	    _this._quick = options.quick || false;
 	    _this._talk_wait = options.talk_wait || 0;
 	    _this._executing = false;
-	    _this._surface_mapping = options.surface_mapping || {};
 	    return _this;
 	  }
 	
@@ -139,7 +138,7 @@ var sakuraScriptExecuter =
 	     */
 	    value: function () {
 	      var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(script) {
-	        var sakurascript, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, token, surface_id, period;
+	        var sakurascript, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, token, period;
 	
 	        return _regenerator2.default.wrap(function _callee$(_context) {
 	          while (1) {
@@ -224,16 +223,10 @@ var sakuraScriptExecuter =
 	                return _context.abrupt('continue', 35);
 	
 	              case 34:
-	                if (token instanceof _sakurascript.SakuraScriptToken.Surface) {
-	                  this._surface_id = token.surface;
-	                } else if (token instanceof _sakurascript.SakuraScriptToken.SurfaceAlias) {
-	                  surface_id = this.surface_mapping[token.surface_alias];
-	
-	                  if (surface_id) this._surface_id = surface_id;
-	                } else if (token instanceof _sakurascript.SakuraScriptToken.PlayAnimationWait) {
-	                  this._wait_until_action_name = '_animation_finished_' + this._surface_id + '_' + token.animation;
+	                if (token instanceof _sakurascript.SakuraScriptToken.PlayAnimationWait) {
+	                  this._wait_until_action_name = '_animation_finished_' + token.animation;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.WaitAnimationEnd) {
-	                  this._wait_until_action_name = '_animation_finished_' + this._surface_id + '_' + token.id;
+	                  this._wait_until_action_name = '_animation_finished_' + token.id;
 	                } else if (token instanceof _sakurascript.SakuraScriptToken.WaitFromBeginning) {
 	                  period = new Date() - this._execute_start_time;
 	
@@ -403,15 +396,14 @@ var sakuraScriptExecuter =
 	
 	    /**
 	     * call when animation finished
-	     * @param {number} surface_id surface id
 	     * @param {number} animation_id animation id
 	     * @return {void}
 	     */
 	
 	  }, {
 	    key: 'animation_finished',
-	    value: function animation_finished(surface_id, animation_id) {
-	      var done = this['_animation_finished_' + surface_id + '_' + animation_id];
+	    value: function animation_finished(animation_id) {
+	      var done = this['_animation_finished_' + animation_id];
 	      if (done) done();
 	    }
 	
@@ -461,17 +453,6 @@ var sakuraScriptExecuter =
 	    key: 'executing',
 	    get: function get() {
 	      return this._executing;
-	    }
-	
-	    /**
-	     * surface mapping
-	     * @type {Object}
-	     */
-	
-	  }, {
-	    key: 'surface_mapping',
-	    get: function get() {
-	      return this._surface_mapping;
 	    }
 	  }]);
 	  return SakuraScriptExecuter;
