@@ -14,7 +14,7 @@ export class SakuraScriptExecuter extends EventEmitter {
     this._quick = options.quick || false;
     this._talk_wait = options.talk_wait || 0;
     this._executing = false;
-    this._execute_id = 0;
+    this._execute_id = 0; // TODO: 永遠に動かし続けることはできない もっといい手がないか
     this._will_abort_id = 0;
   }
 
