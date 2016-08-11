@@ -53,20 +53,19 @@ export class SakuraScriptExecuter extends EventEmitter {
     const sakurascript = SakuraScript.parse(script);
     this.emit('begin_execute');
     this._initialize_execute_state();
-    let abort;
     for (const token of sakurascript.tokens) {
       if (this._wait_until_action_name) {
-        abort = await this._wait_until_action(this._wait_until_action_name);
+        await this._wait_until_action(this._wait_until_action_name);
         this._wait_until_action_name = null;
       } else if (!this.quick) {
         if (this._wait_period != null) {
-          abort = await this._wait(this._wait_period);
+          await this._wait(this._wait_period);
           this._wait_period = null;
         } else if (token instanceof SakuraScriptToken.Char && !this._quick_section) {
-          abort = await this._wait(this.talk_wait);
+          await this._wait(this.talk_wait);
         }
       }
-      if (abort) break;
+      if (this._will_abort) break;
       this.emit('execute', token);
       if (token instanceof SakuraScriptToken.Char) {
         continue;
@@ -91,7 +90,7 @@ export class SakuraScriptExecuter extends EventEmitter {
       }
     }
     this._finalize_execute_state();
-    this.emit('end_execute', abort);
+    this.emit('end_execute', this._will_abort);
   }
 
   _initialize_execute_state() {
@@ -99,6 +98,7 @@ export class SakuraScriptExecuter extends EventEmitter {
     this._wait_period = 0;
     this._wait_until_action_name = null;
     this._quick_section = false;
+    this._will_abort = false;
     this._current_wait = null;
     this._execute_start_time = new Date();
   }
@@ -149,6 +149,7 @@ export class SakuraScriptExecuter extends EventEmitter {
    * @return {void}
    */
   abort_execute() {
-    if (this._current_wait) this._current_wait(true);
+    this._will_abort = true;
+    if (this._current_wait) this._current_wait();
   }
 }
