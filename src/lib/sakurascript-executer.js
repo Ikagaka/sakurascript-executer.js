@@ -14,6 +14,8 @@ export class SakuraScriptExecuter extends EventEmitter {
     this._quick = options.quick || false;
     this._talk_wait = options.talk_wait || 0;
     this._executing = false;
+    this._execute_id = 0;
+    this._will_abort_id = 0;
   }
 
   /**
@@ -50,6 +52,7 @@ export class SakuraScriptExecuter extends EventEmitter {
    */
   async execute(script) {
     this.abort_execute(); // abort previous session
+    const execute_id = ++this._execute_id;
     const sakurascript = SakuraScript.parse(script);
     this.emit('begin_execute');
     this._initialize_execute_state();
@@ -65,7 +68,7 @@ export class SakuraScriptExecuter extends EventEmitter {
           await this._wait(this.talk_wait);
         }
       }
-      if (this._will_abort) break;
+      if (this._will_abort_id >= execute_id) break;
       this.emit('execute', token);
       if (token instanceof SakuraScriptToken.Char) {
         continue;
@@ -90,7 +93,7 @@ export class SakuraScriptExecuter extends EventEmitter {
       }
     }
     this._finalize_execute_state();
-    this.emit('end_execute', this._will_abort);
+    this.emit('end_execute', this._will_abort_id >= execute_id);
   }
 
   _initialize_execute_state() {
@@ -98,7 +101,6 @@ export class SakuraScriptExecuter extends EventEmitter {
     this._wait_period = 0;
     this._wait_until_action_name = null;
     this._quick_section = false;
-    this._will_abort = false;
     this._current_wait = null;
     this._execute_start_time = new Date();
   }
@@ -149,7 +151,7 @@ export class SakuraScriptExecuter extends EventEmitter {
    * @return {void}
    */
   abort_execute() {
-    this._will_abort = true;
+    this._will_abort_id = this._execute_id;
     if (this._current_wait) this._current_wait();
   }
 }

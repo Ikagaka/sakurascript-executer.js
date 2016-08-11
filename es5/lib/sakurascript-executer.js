@@ -68,6 +68,8 @@ var SakuraScriptExecuter = exports.SakuraScriptExecuter = function (_EventEmitte
     _this._quick = options.quick || false;
     _this._talk_wait = options.talk_wait || 0;
     _this._executing = false;
+    _this._execute_id = 0;
+    _this._will_abort_id = 0;
     return _this;
   }
 
@@ -91,13 +93,14 @@ var SakuraScriptExecuter = exports.SakuraScriptExecuter = function (_EventEmitte
      */
     value: function () {
       var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee(script) {
-        var sakurascript, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, token, period;
+        var execute_id, sakurascript, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, token, period;
 
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 this.abort_execute(); // abort previous session
+                execute_id = ++this._execute_id;
                 sakurascript = _sakurascript.SakuraScript.parse(script);
 
                 this.emit('begin_execute');
@@ -105,77 +108,77 @@ var SakuraScriptExecuter = exports.SakuraScriptExecuter = function (_EventEmitte
                 _iteratorNormalCompletion = true;
                 _didIteratorError = false;
                 _iteratorError = undefined;
-                _context.prev = 7;
+                _context.prev = 8;
                 _iterator = (0, _getIterator3.default)(sakurascript.tokens);
 
-              case 9:
+              case 10:
                 if (_iteratorNormalCompletion = (_step = _iterator.next()).done) {
-                  _context.next = 38;
+                  _context.next = 39;
                   break;
                 }
 
                 token = _step.value;
 
                 if (!this._wait_until_action_name) {
-                  _context.next = 17;
+                  _context.next = 18;
                   break;
                 }
 
-                _context.next = 14;
+                _context.next = 15;
                 return this._wait_until_action(this._wait_until_action_name);
 
-              case 14:
+              case 15:
                 this._wait_until_action_name = null;
-                _context.next = 27;
+                _context.next = 28;
                 break;
 
-              case 17:
+              case 18:
                 if (this.quick) {
-                  _context.next = 27;
+                  _context.next = 28;
                   break;
                 }
 
                 if (!(this._wait_period != null)) {
-                  _context.next = 24;
+                  _context.next = 25;
                   break;
                 }
 
-                _context.next = 21;
+                _context.next = 22;
                 return this._wait(this._wait_period);
 
-              case 21:
+              case 22:
                 this._wait_period = null;
-                _context.next = 27;
+                _context.next = 28;
                 break;
 
-              case 24:
+              case 25:
                 if (!(token instanceof _sakurascript.SakuraScriptToken.Char && !this._quick_section)) {
-                  _context.next = 27;
+                  _context.next = 28;
                   break;
                 }
 
-                _context.next = 27;
+                _context.next = 28;
                 return this._wait(this.talk_wait);
 
-              case 27:
-                if (!this._will_abort) {
-                  _context.next = 29;
+              case 28:
+                if (!(this._will_abort_id >= execute_id)) {
+                  _context.next = 30;
                   break;
                 }
 
-                return _context.abrupt('break', 38);
+                return _context.abrupt('break', 39);
 
-              case 29:
+              case 30:
                 this.emit('execute', token);
 
                 if (!(token instanceof _sakurascript.SakuraScriptToken.Char)) {
-                  _context.next = 34;
+                  _context.next = 35;
                   break;
                 }
 
-                return _context.abrupt('continue', 35);
+                return _context.abrupt('continue', 36);
 
-              case 34:
+              case 35:
                 if (token instanceof _sakurascript.SakuraScriptToken.PlayAnimationWait) {
                   this._wait_until_action_name = '_animation_finished_' + token.animation;
                 } else if (token instanceof _sakurascript.SakuraScriptToken.WaitAnimationEnd) {
@@ -197,55 +200,55 @@ var SakuraScriptExecuter = exports.SakuraScriptExecuter = function (_EventEmitte
                   this._quick_section = !this._quick_section;
                 }
 
-              case 35:
+              case 36:
                 _iteratorNormalCompletion = true;
-                _context.next = 9;
+                _context.next = 10;
                 break;
 
-              case 38:
-                _context.next = 44;
+              case 39:
+                _context.next = 45;
                 break;
 
-              case 40:
-                _context.prev = 40;
-                _context.t0 = _context['catch'](7);
+              case 41:
+                _context.prev = 41;
+                _context.t0 = _context['catch'](8);
                 _didIteratorError = true;
                 _iteratorError = _context.t0;
 
-              case 44:
-                _context.prev = 44;
+              case 45:
                 _context.prev = 45;
+                _context.prev = 46;
 
                 if (!_iteratorNormalCompletion && _iterator.return) {
                   _iterator.return();
                 }
 
-              case 47:
-                _context.prev = 47;
+              case 48:
+                _context.prev = 48;
 
                 if (!_didIteratorError) {
-                  _context.next = 50;
+                  _context.next = 51;
                   break;
                 }
 
                 throw _iteratorError;
 
-              case 50:
-                return _context.finish(47);
-
               case 51:
-                return _context.finish(44);
+                return _context.finish(48);
 
               case 52:
-                this._finalize_execute_state();
-                this.emit('end_execute', this._will_abort);
+                return _context.finish(45);
 
-              case 54:
+              case 53:
+                this._finalize_execute_state();
+                this.emit('end_execute', this._will_abort_id >= execute_id);
+
+              case 55:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[7, 40, 44, 52], [45,, 47, 51]]);
+        }, _callee, this, [[8, 41, 45, 53], [46,, 48, 52]]);
       }));
 
       function execute(_x2) {
@@ -261,7 +264,6 @@ var SakuraScriptExecuter = exports.SakuraScriptExecuter = function (_EventEmitte
       this._wait_period = 0;
       this._wait_until_action_name = null;
       this._quick_section = false;
-      this._will_abort = false;
       this._current_wait = null;
       this._execute_start_time = new Date();
     }
@@ -368,7 +370,7 @@ var SakuraScriptExecuter = exports.SakuraScriptExecuter = function (_EventEmitte
   }, {
     key: 'abort_execute',
     value: function abort_execute() {
-      this._will_abort = true;
+      this._will_abort_id = this._execute_id;
       if (this._current_wait) this._current_wait();
     }
   }, {
