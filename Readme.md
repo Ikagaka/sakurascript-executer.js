@@ -4,8 +4,6 @@
 [![npm license](https://img.shields.io/npm/l/sakurascript-executer.svg)](https://www.npmjs.com/package/sakurascript-executer)
 [![npm download total](https://img.shields.io/npm/dt/sakurascript-executer.svg)](https://www.npmjs.com/package/sakurascript-executer)
 [![npm download by month](https://img.shields.io/npm/dm/sakurascript-executer.svg)](https://www.npmjs.com/package/sakurascript-executer)
-[![Bower](https://img.shields.io/bower/v/sakurascript-executer.svg)](https://github.com/Ikagaka/sakurascript-executer.js)
-[![Bower](https://img.shields.io/bower/l/sakurascript-executer.svg)](https://github.com/Ikagaka/sakurascript-executer.js)
 
 [![Dependency Status](https://david-dm.org/Ikagaka/sakurascript-executer.js.svg)](https://david-dm.org/Ikagaka/sakurascript-executer.js)
 [![devDependency Status](https://david-dm.org/Ikagaka/sakurascript-executer.js/dev-status.svg)](https://david-dm.org/Ikagaka/sakurascript-executer.js#info=devDependencies)
@@ -63,7 +61,7 @@ var SakuraScriptExecuter = sakuraScriptExecuter.SakuraScriptExecuter;
 
 ## API
 
-[API Document](https://doc.esdoc.org/github.com/Ikagaka/sakurascript-executer.js/)
+[API Document](https://ikagaka.github.io/sakurascript-executer.js/)
 
 ## License
 
