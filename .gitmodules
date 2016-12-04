@@ -1,0 +1,4 @@
+[submodule "doc"]
+	path = doc
+	url = https://github.com/Ikagaka/sakurascript-executer.js.git
+	branch = gh-pages
