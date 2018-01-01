@@ -71,7 +71,7 @@ export class SakuraScriptExecuter extends EventEmitter {
   emit(event: "execute", token: SakuraScriptToken): boolean;
   emit(event: "endExecute", aborted: boolean): boolean;
   emit(event: string, ...args: any[]) {
-    return super.emit(event, args);
+    return super.emit(event, ...args);
   }
 
   /**
