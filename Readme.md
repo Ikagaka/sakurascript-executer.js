@@ -11,6 +11,8 @@
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/Ikagaka/sakurascript-executer.js?svg=true)](https://ci.appveyor.com/project/Narazaka/sakurascript-executer-js)
 [![codecov.io](https://codecov.io/github/Ikagaka/sakurascript-executer.js/coverage.svg?branch=master)](https://codecov.io/github/Ikagaka/sakurascript-executer.js?branch=master)
 [![Code Climate](https://codeclimate.com/github/Ikagaka/sakurascript-executer.js/badges/gpa.svg)](https://codeclimate.com/github/Ikagaka/sakurascript-executer.js)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b9230230c79d419595d927e8cb55ae9b)](https://www.codacy.com/app/narazaka/sakurascript-executer-js?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ikagaka/sakurascript-executer.js&amp;utm_campaign=Badge_Grade)
+[![Greenkeeper badge](https://badges.greenkeeper.io/Ikagaka/sakurascript-executer.js.svg)](https://greenkeeper.io/)
 
 さくらスクリプト実行機(イベントエミッタ)
 
