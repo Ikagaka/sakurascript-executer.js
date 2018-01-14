@@ -63,7 +63,7 @@ export class SakuraScriptExecuter extends EventEmitter {
   on(event: "beginExecute", listener: () => void): this;
   on(event: "execute", listener: (token: SakuraScriptToken) => void): this;
   on(event: "endExecute", listener: (aborted: boolean) => void): this;
-  on(event: string, listener: Function) {
+  on(event: string, listener: (...args: any[]) => void) {
     return super.on(event, listener);
   }
 
