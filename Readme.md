@@ -22,12 +22,12 @@
 
 npm:
 ```
-npm install sakurascript-executer
+npm install sakurascript sakurascript-executer
 ```
 
 bower:
 ```
-bower install sakurascript-executer
+bower install sakurascript sakurascript-executer
 ```
 
 ## Usage
