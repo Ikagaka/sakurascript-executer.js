@@ -50,12 +50,6 @@ sakurascript_executer.on('execute', function(token) {
 sakurascript_executer.execute("\\h\\s[0]\\u\\s[10]Hello world!\\e");
 ```
 
-browser:
-```html
-<script src="sakurascript-executer.js"></script>
-var SakuraScriptExecuter = sakuraScriptExecuter.SakuraScriptExecuter;
-```
-
 ## API
 
 [API Document](https://ikagaka.github.io/sakurascript-executer.js/)
