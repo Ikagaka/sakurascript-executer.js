@@ -7,5 +7,4 @@ yarn-error.log
 coverage
 .nyc_output
 dist
-web
 yarn.lock
