@@ -27,24 +27,11 @@ npm install sakurascript sakurascript-executer
 
 ## Usage
 
-node.js(ES2015):
 ```javascript
 import {SakuraScriptExecuter} from 'sakurascript-executer';
 import {SakuraScriptToken} from 'sakurascript';
 const sakurascript_executer = new SakuraScriptExecuter({talk_wait: 100});
 sakurascript_executer.on('execute', (token) => {
-  if (token instanceof SakuraScriptToken.Char) process.stdout.write(token.char);
-});
-sakurascript_executer.execute("\\h\\s[0]\\u\\s[10]Hello world!\\e");
-```
-
-node.js(ES5):
-```javascript
-var sakuraScriptExecuter = require('sakurascript-executer');
-var SakuraScriptExecuter = sakuraScriptExecuter.SakuraScriptExecuter;
-var SakuraScriptToken = require('sakurascript').SakuraScriptToken;
-var sakurascript_executer = new SakuraScriptExecuter({talk_wait: 100});
-sakurascript_executer.on('execute', function(token) {
   if (token instanceof SakuraScriptToken.Char) process.stdout.write(token.char);
 });
 sakurascript_executer.execute("\\h\\s[0]\\u\\s[10]Hello world!\\e");
