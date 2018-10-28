@@ -20,7 +20,9 @@
     "docdist": "cd doc && git clean -fd && git rm -rf * && cd .. && npm run doc && cd doc && touch .nojekyll && git add . && git commit -m doc && git push",
     "doc": "typedoc --mode file --out doc --readme Readme.md --disableOutputCheck --excludeNotExported lib && cd doc && git status && cd .."
   },
-  "dependencies": {},
+  "dependencies": {
+    "sakurascript": "^1.1.4"
+  },
   "peerDependencies": {
     "sakurascript": "^1.1.2"
   },
@@ -31,13 +33,12 @@
     "cross-env": "^5.1.3",
     "espower-typescript": "^9.0.0",
     "mocha": "^5.0.0",
-    "nyc": "^12.0.1",
+    "nyc": "^13.1.0",
     "power-assert": "^1.4.4",
-    "sakurascript": "^1.1.2",
     "shx": "^0.3.0",
     "tslint": "^5.9.1",
-    "typedoc": "^0.12.0",
-    "typescript": "^2.7.2"
+    "typedoc": "^0.13.0",
+    "typescript": "^3.1.3"
   },
   "url": "https://github.com/Ikagaka/sakurascript-executer.js",
   "author": {
