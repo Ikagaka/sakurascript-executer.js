@@ -25,11 +25,6 @@ npm:
 npm install sakurascript sakurascript-executer
 ```
 
-bower:
-```
-bower install sakurascript sakurascript-executer
-```
-
 ## Usage
 
 node.js(ES2015):
