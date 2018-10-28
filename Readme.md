@@ -43,4 +43,4 @@ sakurascript_executer.execute("\\h\\s[0]\\u\\s[10]Hello world!\\e");
 
 ## License
 
-This is released under [MIT License](https://narazaka.net/license/MIT?2016).
+This is released under [Zlib License](https://narazaka.net/license/Zlib?2018).

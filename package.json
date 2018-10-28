@@ -46,7 +46,7 @@
     "email": "info@narazaka.net",
     "url": "https://narazaka.net/"
   },
-  "license": "MIT",
+  "license": "Zlib",
   "repository": {
     "type": "git",
     "url": "https://github.com/Ikagaka/sakurascript-executer.js.git"
