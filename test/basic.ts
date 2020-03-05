@@ -1,6 +1,6 @@
 /// <reference types="mocha" />
 import * as assert from "power-assert";
-import {SakuraScriptExecuter} from "../lib/sakurascript-executer";
+import { SakuraScriptExecuter } from "../lib/sakurascript-executer";
 
 describe("SakuraScriptExecuter", () => {
   describe("constructor", () => {

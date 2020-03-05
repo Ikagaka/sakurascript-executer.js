@@ -1,23 +1,34 @@
 /// <reference types="node" />
-import {EventEmitter} from "events";
-import {SakuraScript, SakuraScriptToken} from "sakurascript";
+import { EventEmitter } from "events";
+import { SakuraScript, SakuraScriptToken } from "sakurascript";
 
 /**
  * SakuraScript Executer
  */
 export class SakuraScriptExecuter extends EventEmitter {
   private _quick: boolean;
+
   private _talkWait: number;
+
   private _executing: boolean;
+
   private _executeId: number;
+
   private _willAbortId: number;
+
   private _waitUntilActionId: "_balloonClicked" | number | null;
+
   private _waitPeriod: number | null;
+
   private _executeStartTime: Date;
+
   private _quickSection: boolean;
+
   private _currentWait: (() => void) | null;
+
   private _balloonClicked: (() => void) | null;
-  private _animationFinished: {[id: string]: (() => void) | null};
+
+  private _animationFinished: { [id: string]: (() => void) | null };
 
   /**
    * constructor
@@ -25,7 +36,7 @@ export class SakuraScriptExecuter extends EventEmitter {
    * @param quick quick section flag
    * @param talkWait talk wait
    */
-  constructor(options: {quick?: boolean, talkWait?: number} = {}) {
+  constructor(options: { quick?: boolean; talkWait?: number } = {}) {
     super();
     this._quick = options.quick || false;
     this._talkWait = options.talkWait || 0;
@@ -38,38 +49,54 @@ export class SakuraScriptExecuter extends EventEmitter {
   /**
    * quick mode
    */
-  get quick() { return this._quick; }
+  get quick() {
+    return this._quick;
+  }
 
   /**
    * quick mode
    */
-  set quick(value) { this._quick = value; }
+  set quick(value) {
+    this._quick = value;
+  }
 
   /**
    * default talk wait
    */
-  get talkWait() { return this._talkWait; }
+  get talkWait() {
+    return this._talkWait;
+  }
 
   /**
    * default talk wait
    */
-  set talkWait(value) { this._talkWait = value; }
+  set talkWait(value) {
+    this._talkWait = value;
+  }
 
   /**
    * true if executing
    */
-  get executing() { return this._executing; }
+  get executing() {
+    return this._executing;
+  }
 
   on(event: "beginExecute", listener: () => void): this;
+
   on(event: "execute", listener: (token: SakuraScriptToken) => void): this;
+
   on(event: "endExecute", listener: (aborted: boolean) => void): this;
+
   on(event: string, listener: (...args: any[]) => void) {
     return super.on(event, listener);
   }
 
   emit(event: "beginExecute"): boolean;
+
   emit(event: "execute", token: SakuraScriptToken): boolean;
+
   emit(event: "endExecute", aborted: boolean): boolean;
+
   emit(event: string, ...args: any[]) {
     return super.emit(event, ...args);
   }
@@ -89,19 +116,23 @@ export class SakuraScriptExecuter extends EventEmitter {
     this._initializeExecuteState();
     for (const token of sakuraScript.tokens) {
       if (this._waitUntilActionId) {
+        // eslint-disable-next-line no-await-in-loop
         await this._waitUntilAction(this._waitUntilActionId);
         this._waitUntilActionId = null;
       } else if (!this.quick) {
         if (this._waitPeriod != null) {
+          // eslint-disable-next-line no-await-in-loop
           await this._wait(this._waitPeriod);
           this._waitPeriod = null;
         } else if (token instanceof SakuraScriptToken.Char && !this._quickSection) {
+          // eslint-disable-next-line no-await-in-loop
           await this._wait(this.talkWait);
         }
       }
       if (this._willAbortId >= executeId) break;
       this.emit("execute", token);
       if (token instanceof SakuraScriptToken.Char) {
+        // eslint-disable-next-line no-continue
         continue;
       } else if (token instanceof SakuraScriptToken.PlayAnimationWait) {
         this._waitUntilActionId = token.animation;
@@ -165,7 +196,7 @@ export class SakuraScriptExecuter extends EventEmitter {
   }
 
   private async _wait(period: number) {
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
       this._currentWait = resolve;
       setTimeout(() => resolve(period), period);
     }).then(() => {
@@ -174,7 +205,7 @@ export class SakuraScriptExecuter extends EventEmitter {
   }
 
   private async _waitUntilAction(_waitUntilActionId: "_balloonClicked" | number) {
-    await new Promise((resolve) => {
+    await new Promise(resolve => {
       this._currentWait = resolve;
       if (_waitUntilActionId === "_balloonClicked") {
         this._balloonClicked = resolve;
